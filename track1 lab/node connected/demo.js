@@ -3,28 +3,10 @@ const {MongoClient} = require("mongodb")
 async function main(){
     const url = "mongodb+srv://MugemaneBertin2001:12345@cluster0.oqjbtbf.mongodb.net/test";
     const client = new MongoClient(url)
-        const mine = [
-        {
-            name:"mine",
-            age : 32,
-            location:"here"
-        
-        },
-        {
-            name:"rare",
-            age : 43,
-            connection: "zoom"
-        },
-        {
-            head:"cental officer",
-            res: "coordination",
-            party:"green party"
-        }
-
-        ]
     try{    
         await client.connect();
-        await createMultiple(client,mine)
+        //await createMultiple(client,mine)
+        await findOneListingByName(client,"Murenzi")
         } catch(e){
             console.error(e)
         } finally{
@@ -33,6 +15,19 @@ async function main(){
     
 }
 main().catch(console.error)
+//
+
+async function findOneListingByName(client,listingName){
+  const result =  await client.db("test").collection("listAndReviews").findOne({name : listingName})
+    if(result){
+        console.log(`Found a listing in collection with name ${listingName}`)
+        console.log(result)
+    }
+    else{
+        console.log(`No listing found in collection with name`);
+        console.log(listingName)
+    }
+}
 //
 async function createMultiple(client, inputArray){
     const result = await client.db("test").collection("reviewAndroll").insertMany(inputArray);
